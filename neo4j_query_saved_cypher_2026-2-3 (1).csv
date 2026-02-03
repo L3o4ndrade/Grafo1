@@ -1,0 +1,41 @@
+name,description,query,id,parentId,isFolder
+CONSTRAINTS (ID ÚNICO),,"// CONSTRAINTS (ID ÚNICO)
+
+CREATE CONSTRAINT IF NOT EXISTS FOR (u:Usuario) REQUIRE u.id IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS FOR (f:Filme)  REQUIRE f.id IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS FOR (a:Ator)   REQUIRE a.id IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS FOR (d:Diretor) REQUIRE d.id IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS FOR (g:Genero) REQUIRE g.id IS UNIQUE;
+CREATE CONSTRAINT IF NOT EXISTS FOR (s:Serie)  REQUIRE s.id IS UNIQUE;
+
+
+// USUÁRIOS (10)
+UNWIND range(1,10) AS i
+CREATE (:Usuario {id: i});
+
+
+// FILMES (10)
+UNWIND range(1,10) AS i
+CREATE (:Filme {id: i});
+
+
+// OUTROS NÓS
+CREATE (:Ator {id: 1});
+CREATE (:Diretor {id: 1});
+CREATE (:Genero {id: 1});
+CREATE (:Serie {id: 1});
+
+
+// RELACIONAMENTOS
+MATCH (a:Ator {id: 1}), (f:Filme {id: 1})
+CREATE (a)-[:ACTED_IN]->(f);
+
+MATCH (d:Diretor {id: 1}), (f:Filme {id: 1})
+CREATE (d)-[:DIRECTED]->(f);
+
+MATCH (f:Filme {id: 1}), (g:Genero {id: 1})
+CREATE (f)-[:IN_GENRE]->(g);
+
+MATCH (u:Usuario {id: 1}), (f:Filme {id: 1})
+CREATE (u)-[:WATCHED]->(f);
+",0,,false
